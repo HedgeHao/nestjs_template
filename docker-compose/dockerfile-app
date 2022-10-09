@@ -1,0 +1,18 @@
+FROM node:16.17.1-alpine3.16
+
+COPY package.json /app/
+
+WORKDIR /app/
+
+RUN npm i
+
+COPY tsconfig.json /app/
+COPY tsconfig.build.json /app/
+COPY src/ /app/src/
+
+RUN npm run build
+
+COPY env/.env.prod /etc/config/.env.prod
+COPY static/ /app/static
+
+CMD ["npm", "run", "start:prod"]
